@@ -111,9 +111,14 @@ public class Rocket : MonoBehaviour
     }
     else
     {
-      audioSource.Stop();
-      mainEngineParticles.Stop();
+      StopApplyingThrust();
     }
+  }
+
+  private void StopApplyingThrust()
+  {
+    audioSource.Stop();
+    mainEngineParticles.Stop();
   }
 
   private void ApplyThrust()
@@ -129,20 +134,22 @@ public class Rocket : MonoBehaviour
   // Handle game rocket ship rotation
   private void RespondToRotateInput()
   {
-    rigidbody.freezeRotation = true; // freeze physics
-
     float rotationSpeed = rcsThrust * Time.deltaTime;
 
     if (Input.GetKey(KeyCode.A))
     {
-
-      transform.Rotate(Vector3.forward * rotationSpeed);
+      RotateManually(rotationSpeed);
     }
     else if (Input.GetKey(KeyCode.D))
     {
-      transform.Rotate(-Vector3.forward * rotationSpeed);
+      RotateManually(-rotationSpeed);
     }
+  }
 
+  private void RotateManually(float rotationSpeed)
+  {
+    rigidbody.freezeRotation = true; // freeze physics
+    transform.Rotate(Vector3.forward * rotationSpeed);
     rigidbody.freezeRotation = false; // resume physics
   }
 
